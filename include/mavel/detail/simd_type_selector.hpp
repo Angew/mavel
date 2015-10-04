@@ -63,9 +63,18 @@ template <
 	class Component,
 	operation_set OperationSet
 >
-struct simd_type_selector<Component, OperationSet, false>
+class simd_type_selector<Component, OperationSet, false>
 {
-	using type = /*size_based*/;
+	using iter = typename ::boost::mpl::find_if<
+		simd_types,
+		::boost::mpl::and_<
+			::boost::mpl::equal_to<
+				::boost::mpl::sizeof_<::boost::mpl::_1>,
+				::boost::mpl::sizeof_<Component>
+			>,
+
+		>,
+	using type = ;
 };
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
