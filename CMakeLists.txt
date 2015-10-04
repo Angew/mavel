@@ -11,6 +11,7 @@ set_property(
 	TARGET MaVeL
 	PROPERTY INTERFACE_INCLUDE_DIRECTORIES
 	${CMAKE_CURRENT_SOURCE_DIR}/include
+	${Boost_INCLUDE_DIRS}
 )
 
 if(MaVeL_DEVELOP)
@@ -22,6 +23,7 @@ if(MaVeL_DEVELOP)
 		include/mavel/vector.hpp
 
 		include/mavel/detail/operation_set_selector.hpp
+		include/mavel/detail/simd_type_selector.hpp
 	)
 	set_target_properties(
 		MaVeL_dev
