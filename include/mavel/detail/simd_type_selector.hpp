@@ -15,20 +15,40 @@ namespace mvl {
 
 namespace detail {
 
-using simd_types = ::boost::mpl::vector<
-	float,
-	double,
-	::std::int32_t,
-	::std::uint32_t,
-	::std::int16_t,
-	::std::uint16_t,
-	::std::int8_t,
-	::std::uint8_t
->;
+template <operation_set OperationSet>
+struct simd_types;
+//--------------------------------------------------------------------------------------------------
+template <>
+struct simd_types<operation_set::real>
+{
+	using types = ::boost::mpl::vector<
+		float,
+		double
+	>;
+};
+//--------------------------------------------------------------------------------------------------
+template <>
+struct simd_types<operation_set::integral>
+{
+	using types = ::boost::mpl::vector<
+		::std::int32_t,
+		::std::uint32_t,
+		::std::int16_t,
+		::std::uint16_t,
+		::std::int8_t,
+		::std::uint8_t
+	>;
+};
+//--------------------------------------------------------------------------------------------------
+template <operation_set OperationSet>
+using simd_types_for = typename simd_types<OperationSet>::types;
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 template <class T>
-struct is_simd_type : ::boost::mpl::contains<simd_types, T>
+struct is_simd_type : ::boost::mpl::or_<
+	::boost::mpl::contains<simd_types_for<operation_set::real>, T>,
+	::boost::mpl::contains<simd_types_for<operation_set::integral>, T>
+>
 {};
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
@@ -65,16 +85,15 @@ template <
 >
 class simd_type_selector<Component, OperationSet, false>
 {
-	using iter = typename ::boost::mpl::find_if<
-		simd_types,
-		::boost::mpl::and_<
+	using type = typename check_type_operation_compatibility<
+		typename ::boost::mpl::find_if<
+			simd_types_for<OperationSet>,
 			::boost::mpl::equal_to<
 				::boost::mpl::sizeof_<::boost::mpl::_1>,
 				::boost::mpl::sizeof_<Component>
-			>,
-
-		>,
-	using type = ;
+			>
+		>::type
+	>::type;
 };
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
