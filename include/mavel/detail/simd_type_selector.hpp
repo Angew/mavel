@@ -5,6 +5,8 @@
 #include "mavel/operation_set.hpp"
 
 #include <boost/mpl/contains.hpp>
+#include <boost/mpl/equal_to.hpp>
+#include <boost/mpl/sizeof.hpp>
 #include <boost/mpl/vector.hpp>
 
 #include <cstdint>
@@ -92,7 +94,8 @@ class simd_type_selector<Component, OperationSet, false>
 				::boost::mpl::sizeof_<::boost::mpl::_1>,
 				::boost::mpl::sizeof_<Component>
 			>
-		>::type
+		>::type,
+		OperationSet
 	>::type;
 };
 //--------------------------------------------------------------------------------------------------
