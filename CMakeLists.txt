@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.3)
 
 project(MaVeL)
 
-set(MaVeL_DEVELOP FALSE CACHE BOOL "Generate targets for developing MaVeL, as opposed to only installing & using it")
+set(MaVeL_DEVELOP FALSE CACHE BOOL "Generate targets for developing MaVeL, as opposed to only installing and using it")
+set(MaVeL_TEST FALSE CACHE BOOL "Generate tests for MaVeL")
 
 find_package(Boost REQUIRED)
 
@@ -29,4 +30,11 @@ if(MaVeL_DEVELOP)
 	)
 	target_link_libraries(MaVeL_dev PUBLIC MaVeL)
 	source_group("Header Files\\detail" REGULAR_EXPRESSION include/mavel/detail/*)
+endif()
+
+if(MaVeL_TEST)
+	add_executable(MaVeL_test
+		test/main.cpp
+	)
+	target_link_libraries(MaVeL_test PUBLIC MaVeL)#Boost
 endif()
