@@ -17,8 +17,6 @@ if(MaVeL_DEVELOP)
 	add_library(MaVeL_dev STATIC
 		include/mavel/operation_set.hpp
 		include/mavel/operation_set_selector.hpp
-		include/mavel/simd_iffast.hpp
-		include/mavel/simd_type_selector.hpp
 		include/mavel/vector.hpp
 
 		include/mavel/detail/operation_set_selector.hpp
